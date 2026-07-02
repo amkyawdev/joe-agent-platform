@@ -2,17 +2,31 @@
 
 from typing import Generator, Optional
 from fastapi import Depends
-import redis
 
 from llm.client import LLMClient
 from agent.memory import ConversationMemory
-from rag.retriever import Retriever
-from rag.generator import RAGPipeline
+
+# Optional imports - handle gracefully if not installed
+try:
+    import redis
+    REDIS_AVAILABLE = True
+except ImportError:
+    REDIS_AVAILABLE = False
+    redis = None
+
+try:
+    from rag.retriever import Retriever
+    from rag.generator import RAGPipeline
+    RAG_AVAILABLE = True
+except ImportError:
+    RAG_AVAILABLE = False
+    Retriever = None
+    RAGPipeline = None
 
 
 _llm_client: Optional[LLMClient] = None
-_retriever: Optional[Retriever] = None
-_redis_client: Optional[redis.Redis] = None
+_retriever: Optional = None
+_redis_client: Optional = None
 
 
 def get_llm_client() -> LLMClient:
@@ -23,16 +37,20 @@ def get_llm_client() -> LLMClient:
     return _llm_client
 
 
-def get_retriever() -> Retriever:
+def get_retriever():
     """Get retriever singleton."""
+    if not RAG_AVAILABLE:
+        return None
     global _retriever
     if _retriever is None:
         _retriever = Retriever()
     return _retriever
 
 
-def get_redis() -> redis.Redis:
+def get_redis():
     """Get Redis client."""
+    if not REDIS_AVAILABLE:
+        return None
     global _redis_client
     if _redis_client is None:
         from config.settings import Settings
@@ -46,6 +64,8 @@ def get_conversation_memory() -> ConversationMemory:
     return ConversationMemory()
 
 
-def get_rag_pipeline() -> RAGPipeline:
+def get_rag_pipeline():
     """Get RAG pipeline."""
+    if not RAG_AVAILABLE:
+        return None
     return RAGPipeline(retriever=get_retriever())

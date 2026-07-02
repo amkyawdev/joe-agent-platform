@@ -1,7 +1,5 @@
 {
   "version": 2,
-  
-  // ==================== BUILD CONFIG ====================
   "builds": [
     {
       "src": "api/server.py",
@@ -12,19 +10,9 @@
       }
     }
   ],
-  
-  // ==================== ROUTING ====================
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/server.py"
-    },
-    {
-      "src": "/docs",
-      "dest": "api/server.py"
-    },
-    {
-      "src": "/redoc",
       "dest": "api/server.py"
     },
     {
@@ -32,27 +20,13 @@
       "dest": "api/server.py"
     }
   ],
-  
-  // ==================== ENVIRONMENT ====================
   "env": {
-    "PYTHONUNBUFFERED": "1",
-    "PYTHON_VERSION": "3.11"
+    "PYTHONUNBUFFERED": "1"
   },
-  
-  // ==================== REGIONS ====================
-  "regions": ["sin1"],
-  
-  // ==================== FUNCTION CONFIG ====================
   "functions": {
     "api/server.py": {
       "memory": 1024,
       "maxDuration": 60
     }
-  },
-  
-  // ==================== OUTPUT CONFIG ====================
-  "outputDirectory": "api",
-  
-  // ==================== INSTALL COMMAND ====================
-  "installCommand": "pip install -r requirements.vercel.txt"
+  }
 }
