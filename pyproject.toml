@@ -7,7 +7,7 @@ name = "joe-agent-platform"
 version = "0.1.0"
 description = "AI Agent Platform API"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.11"
 authors = [
     {name = "Joe Team"}
@@ -17,3 +17,7 @@ dependencies = [
     "pydantic>=2.5.0",
     "python-dotenv>=1.0.0",
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["api*"]
