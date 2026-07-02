@@ -1,18 +1,34 @@
 {
-  "version": 2,
+  "framework": null,
+  "buildCommand": "pip install -r requirements.vercel.txt",
+  "outputDirectory": "api",
+  "installCommand": "pip install -r requirements.vercel.txt",
+  "devCommand": "uvicorn api.server:app --reload",
+  "regions": ["sin1"],
+  
   "builds": [
     {
       "src": "api/server.py",
       "use": "@vercel/python",
       "config": {
         "runtime": "python3.11",
-        "maxDuration": 60
+        "maxDuration": 60,
+        "memory": 1024
       }
     }
   ],
+  
   "routes": [
     {
       "src": "/api/(.*)",
+      "dest": "api/server.py"
+    },
+    {
+      "src": "/docs",
+      "dest": "api/server.py"
+    },
+    {
+      "src": "/redoc",
       "dest": "api/server.py"
     },
     {
@@ -20,9 +36,12 @@
       "dest": "api/server.py"
     }
   ],
+  
   "env": {
-    "PYTHONUNBUFFERED": "1"
+    "PYTHONUNBUFFERED": "1",
+    "VERCEL": "1"
   },
+  
   "functions": {
     "api/server.py": {
       "memory": 1024,

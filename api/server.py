@@ -1,5 +1,6 @@
 """FastAPI Server - Main API server for Vercel."""
 
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,13 +18,24 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-# Health endpoint
+# Detect Vercel environment
+VERCEL_ENV = os.getenv("VERCEL", "0") == "1"
+
+
+# ==================== HEALTH ====================
+
 @app.get("/api/health")
 async def health():
-    return {"status": "healthy", "service": "joe-agent-platform"}
+    return {
+        "status": "healthy",
+        "service": "joe-agent-platform",
+        "vercel": VERCEL_ENV,
+        "version": "0.1.0"
+    }
 
 
-# Models endpoint
+# ==================== MODELS ====================
+
 @app.get("/api/models")
 async def list_models():
     from llm.models import AVAILABLE_MODELS
@@ -33,12 +45,12 @@ async def list_models():
             "id": model_id,
             "name": config.get("name", model_id),
             "is_free": config.get("is_free", False),
-            "context_length": config.get("context_length", 4096)
+            "context_length": config.get("context_length", 4096),
+            "capabilities": config.get("capabilities", [])
         })
     return {"models": models, "total": len(models)}
 
 
-# Free models endpoint
 @app.get("/api/models/free")
 async def list_free_models():
     from llm.models import AVAILABLE_MODELS
@@ -50,19 +62,36 @@ async def list_free_models():
     return {"models": free_models, "total": len(free_models)}
 
 
-# Settings endpoint
+# ==================== SETTINGS ====================
+
 @app.get("/api/settings")
 async def get_settings():
     return {
         "app_name": "Joe-Agent-Platform",
         "version": "0.1.0",
+        "environment": "vercel" if VERCEL_ENV else "local",
         "default_model": "openrouter-free",
         "temperature": 0.7,
-        "max_tokens": 4096
+        "max_tokens": 4096,
+        "features": {
+            "llm": True,
+            "crawler": True,
+            "rag": True
+        }
     }
 
 
-# Chat endpoint
+@app.put("/api/settings")
+async def update_settings(request: dict):
+    return {
+        "status": "success",
+        "message": "Settings updated",
+        "data": request
+    }
+
+
+# ==================== CHAT ====================
+
 @app.post("/api/chat")
 async def chat(request: dict):
     message = request.get("message", "")
@@ -77,7 +106,8 @@ async def chat(request: dict):
         return {"error": str(e), "message": "Chat failed"}
 
 
-# Code generation endpoint
+# ==================== CODE ====================
+
 @app.post("/api/code")
 async def generate_code(request: dict):
     task = request.get("task", "")
@@ -94,11 +124,13 @@ async def generate_code(request: dict):
         return {"error": str(e), "message": "Code generation failed"}
 
 
-# Root endpoint
+# ==================== ROOT ====================
+
 @app.get("/")
 async def root():
     return {
         "message": "Joe-Agent-Platform API",
         "version": "0.1.0",
-        "docs": "/api/docs"
+        "docs": "/api/docs",
+        "vercel": VERCEL_ENV
     }
