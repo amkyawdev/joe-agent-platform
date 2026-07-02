@@ -1,42 +1,81 @@
 # Joe-Agent-Platform
 
-A comprehensive AI agent platform for building intelligent applications with LLM integration, web crawling, RAG capabilities, and more.
+> AI Agent Platform with Free LLM Coding Models
 
-## Features
+Build intelligent applications with LLM integration, web crawling, RAG capabilities, and powerful CLI tools — all using **free AI models**.
 
-- 🤖 **AI Agent Framework** - Planning, execution, reasoning, and workflow management
-- 🔗 **LLM Integration** - OpenRouter support with fallback providers
-- 🌐 **Web Crawler** - Browser automation, parsing, and markdown conversion
-- 📚 **RAG System** - Retrieval-augmented generation with vector storage
-- 🚀 **REST API** - FastAPI-based API server
-- 🔒 **Security** - JWT authentication, encryption, rate limiting
-- 📊 **Monitoring** - Metrics, tracing, and health checks
+---
 
-## Quick Start
+## ✨ Features
+
+| Module | Description |
+|--------|-------------|
+| **CLI** | 12 commands: ask, chat, code, crawl, scrape, search, summarize, analyze |
+| **Agent** | Planner, executor, reasoning, workflow, memory, tools |
+| **LLM** | OpenRouter integration with 6+ free coding models |
+| **Crawler** | Playwright browser automation, parsing, markdown |
+| **RAG** | ChromaDB vector store, embeddings, retrieval |
+| **API** | FastAPI server with WebSocket, JWT auth, rate limiting |
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-# Install dependencies
+# Clone & install
 pip install -r requirements.txt
 
-# Run with Docker
-docker-compose up -d
+# Run code generation
+python -m cli.main code "Write a REST API in Python"
 
-# Run CLI
-python -m cli.main ask "Your question here"
+# Interactive chat
+python -m cli.main chat
+
+# List free models
+python -m cli.main models --free-only
+
+# Run API server
+uvicorn api.server:app --port 8000
 ```
 
-## Project Structure
+---
 
-- `cli/` - Command-line interface
-- `agent/` - Agent core modules
-- `llm/` - LLM client and providers
-- `crawler/` - Web crawling utilities
-- `rag/` - RAG components
-- `api/` - REST API server
-- `database/` - Database integrations
-- `security/` - Security utilities
-- `monitoring/` - Monitoring and logging
+## ⭐ Free Models
 
-## License
+| Model | Context | Best For |
+|-------|---------|----------|
+| `openrouter/free` | 262K | Auto-routes to best free model |
+| `google/gemma-4-31b-it:free` | 32K | General coding |
+| `cohere/north-mini-code:free` | 32K | Fast code generation |
+| `nvidia/nemotron-3-ultra:free` | 1M | Long context tasks |
+
+---
+
+## 📁 Project Structure
+
+```
+joe-agent-platform/
+├── cli/          # Command-line interface
+├── agent/        # AI agent framework
+├── llm/          # LLM providers & models
+├── crawler/      # Web crawling
+├── rag/          # RAG system
+├── api/          # FastAPI server
+├── database/     # DB integrations
+├── security/     # JWT, rate limiting
+└── tests/        # Unit tests (28 passing)
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+pytest tests/ -v
+```
+
+---
+
+## 📄 License
 
 MIT
