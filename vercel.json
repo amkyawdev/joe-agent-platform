@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/server.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.11",
+        "maxDuration": 30
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/server.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "api/server.py"
+    }
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1"
+  },
+  "regions": ["sin1"],
+  "functions": {
+    "api/server.py": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
+}
