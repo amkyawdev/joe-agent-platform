@@ -1,0 +1,22 @@
+{
+  "models": {
+    "gpt-4-turbo-preview": {
+      "id": "gpt-4-turbo-preview",
+      "provider": "openrouter",
+      "name": "GPT-4 Turbo",
+      "description": "Fast and capable GPT-4 model with 128K context"
+    },
+    "gpt-4": {
+      "id": "gpt-4",
+      "provider": "openrouter",
+      "name": "GPT-4",
+      "description": "Most capable GPT-4 model"
+    },
+    "gpt-3.5-turbo": {
+      "id": "gpt-3.5-turbo",
+      "provider": "openrouter",
+      "name": "GPT-3.5 Turbo",
+      "description": "Fast and affordable GPT-3.5 model"
+    }
+  }
+}

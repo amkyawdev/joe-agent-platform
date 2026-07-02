@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://joe:joe@postgres:5432/joe_db
+      - REDIS_URL=redis://redis:6379
+      - CHROMA_HOST=chroma
+    depends_on:
+      - postgres
+      - redis
+      - chroma
+    volumes:
+      - ./storage:/app/storage
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=joe
+      - POSTGRES_PASSWORD=joe
+      - POSTGRES_DB=joe_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  chroma:
+    image: chromadb/chroma:latest
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+
+volumes:
+  postgres_data:
+  redis_data:
+  chroma_data:
