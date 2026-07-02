@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "joe-agent-platform"
 version = "0.1.0"
-description = "AI Agent Platform API"
+description = "Joe AI Studio - Free AI Coding Platform"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
@@ -16,6 +16,7 @@ dependencies = [
     "fastapi>=0.109.0",
     "pydantic>=2.5.0",
     "python-dotenv>=1.0.0",
+    "httpx>=0.25.0",
 ]
 
 [tool.setuptools.packages.find]
