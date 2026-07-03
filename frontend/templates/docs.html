@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Docs - Joe AI Studio{% endblock %}
+
+{% block extra_style %}
+<style>
+.endpoint {
+    background: #1a1a24;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.method-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+}
+.method-get {
+    background: #10b981;
+}
+.method-post {
+    background: #f59e0b;
+}
+.method-delete {
+    background: #ef4444;
+}
+.method-put {
+    background: #3b82f6;
+}
+code {
+    background: #1a1a24;
+    padding: 0.125rem 0.25rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+pre {
+    background: #1a1a24;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center fw-bold mb-4">
+        <i class="bi bi-book me-2"></i>Documentation
+    </h1>
+    
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card">
+                <h5><i class="bi bi-rocket-takeoff me-2" style="color: #6366f1"></i>Quick Start</h5>
+                
+                <div class="endpoint">
+                    <span class="method-badge method-get">GET</span>
+                    <code>/api/health</code>
+                    <p class="text-secondary small mb-0 mt-2">Health check endpoint</p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method-badge method-get">GET</span>
+                    <code>/api/models</code>
+                    <p class="text-secondary small mb-0 mt-2">List available models</p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method-badge method-get">GET</span>
+                    <code>/api/settings</code>
+                    <p class="text-secondary small mb-0 mt-2">Get application settings</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card">
+                <h5><i class="bi bi-chat-dots me-2" style="color: #6366f1"></i>Chat API</h5>
+                
+                <div class="endpoint">
+                    <span class="method-badge method-post">POST</span>
+                    <code>/api/chat</code>
+                    <p class="text-secondary small mb-0 mt-2">Send a chat message</p>
+                    <pre><code>{
+  "message": "Hello!",
+  "model": "openrouter/free",
+  "history": []
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card">
+                <h5><i class="bi bi-terminal me-2" style="color: #6366f1"></i>CLI Usage</h5>
+                
+                <div class="endpoint">
+                    <p class="mb-1"><code>python -m cli.main chat</code></p>
+                    <p class="text-secondary small mb-2">Start interactive chat</p>
+                    
+                    <p class="mb-1"><code>python -m cli.main code "Write a REST API"</code></p>
+                    <p class="text-secondary small mb-2">Generate code</p>
+                    
+                    <p class="mb-1"><code>python -m cli.main ask "What is Python?"</code></p>
+                    <p class="text-secondary small mb-2">Ask a question</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card">
+                <h5><i class="bi bi-box me-2" style="color: #6366f1"></i>Available Models</h5>
+                
+                <div class="endpoint">
+                    <p class="mb-1"><code>openrouter/free</code></p>
+                    <p class="text-secondary small mb-2">Auto-routes to best free model (262K context)</p>
+                    
+                    <p class="mb-1"><code>google/gemma-4-31b-it:free</code></p>
+                    <p class="text-secondary small mb-2">Google Gemma 4 (32K context)</p>
+                    
+                    <p class="mb-1"><code>cohere/north-mini-code:free</code></p>
+                    <p class="text-secondary small mb-2">Cohere North Mini (32K context)</p>
+                    
+                    <p class="mb-1"><code>nvidia/nemotron-3-ultra:free</code></p>
+                    <p class="text-secondary small mb-2">NVIDIA Nemotron 3 (1M context)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

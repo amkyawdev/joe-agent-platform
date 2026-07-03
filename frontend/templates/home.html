@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Joe AI Studio - Free AI Coding Platform{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <h1 style="font-size: 3rem; font-weight: 800">
+            Build with <span style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent">Free AI</span><br>
+            Powered by OpenRouter
+        </h1>
+        <p class="text-secondary mx-auto" style="max-width: 600px">
+            Generate code, chat with AI, and build applications using free coding models.
+        </p>
+        <div class="mt-4">
+            <a href="/chat" class="btn btn-p me-2">
+                <i class="bi bi-chat-dots me-1"></i> Start Chatting
+            </a>
+            <a href="/docs" class="btn" style="background: transparent; border: 1px solid #27272a; color: #fff">
+                <i class="bi bi-book me-1"></i> View Docs
+            </a>
+        </div>
+        <div class="d-flex justify-content-center gap-5 mt-5">
+            <div>
+                <div class="stat">6+</div>
+                <div class="text-secondary small">Free Models</div>
+            </div>
+            <div>
+                <div class="stat">1M</div>
+                <div class="text-secondary small">Max Context</div>
+            </div>
+            <div>
+                <div class="stat">100%</div>
+                <div class="text-secondary small">Free</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center fw-bold mb-4">Free AI Models</h2>
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card" style="cursor: pointer" onclick="window.location.href='/chat?model=openrouter/free'">
+                <div class="d-flex justify-content-between mb-2">
+                    <h5 class="mb-0">OpenRouter Free</h5>
+                    <span class="badge-custom">RECOMMENDED</span>
+                </div>
+                <p class="text-secondary small mb-0">Auto-routes to best model</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card" style="cursor: pointer" onclick="window.location.href='/chat?model=google/gemma-4-31b-it:free'">
+                <h5 class="mb-2">Google Gemma 4</h5>
+                <span class="badge-custom">FREE</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card" style="cursor: pointer" onclick="window.location.href='/chat?model=cohere/north-mini-code:free'">
+                <h5 class="mb-2">Cohere North</h5>
+                <span class="badge-custom">FREE</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card" style="cursor: pointer" onclick="window.location.href='/chat?model=nvidia/nemotron-3-ultra:free'">
+                <h5 class="mb-2">NVIDIA Nemotron</h5>
+                <span class="badge-custom">FREE</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 pb-5">
+    <h2 class="text-center fw-bold mb-4">Powerful Features</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="icon-box">
+                    <i class="bi bi-code-slash"></i>
+                </div>
+                <h5>Code Generation</h5>
+                <p class="text-secondary mb-0">Generate clean, efficient code.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="icon-box">
+                    <i class="bi bi-chat-quote"></i>
+                </div>
+                <h5>Smart Chat</h5>
+                <p class="text-secondary mb-0">Natural language conversations.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="icon-box">
+                    <i class="bi bi-brain"></i>
+                </div>
+                <h5>AI Reasoning</h5>
+                <p class="text-secondary mb-0">Complex problem solving.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="icon-box">
+                    <i class="bi bi-search"></i>
+                </div>
+                <h5>Code Review</h5>
+                <p class="text-secondary mb-0">Automated code review.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="icon-box">
+                    <i class="bi bi-bug"></i>
+                </div>
+                <h5>Debugging</h5>
+                <p class="text-secondary mb-0">Find and fix bugs.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="icon-box">
+                    <i class="bi bi-file-earmark-code"></i>
+                </div>
+                <h5>Documentation</h5>
+                <p class="text-secondary mb-0">Generate docs.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

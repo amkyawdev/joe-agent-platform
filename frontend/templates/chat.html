@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - Joe AI Studio{% endblock %}
+
+{% block extra_style %}
+<style>
+.chat-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #27272a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.model-btn {
+    background: #1a1a24;
+    border: 1px solid #27272a;
+    color: #a1a1aa;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.model-btn:hover {
+    border-color: #6366f1;
+    color: #fff;
+}
+.model-btn.active {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: #fff;
+}
+#messages {
+    height: 400px;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+.message-input {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #27272a;
+}
+.code-block {
+    background: #0a0a0f;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="chat-container">
+        <div class="chat-header">
+            <div>
+                <h5 class="mb-1"><i class="bi bi-robot me-2"></i>AI Assistant</h5>
+                <small class="text-secondary">Powered by OpenRouter</small>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="model-btn {% if model == 'openrouter/free' %}active{% endif %}" 
+                        onclick="setModel('openrouter/free')">Auto</button>
+                <button class="model-btn {% if model == 'google/gemma-4-31b-it:free' %}active{% endif %}" 
+                        onclick="setModel('google/gemma-4-31b-it:free')">Gemma</button>
+                <button class="model-btn {% if model == 'cohere/north-mini-code:free' %}active{% endif %}" 
+                        onclick="setModel('cohere/north-mini-code:free')">Code</button>
+            </div>
+        </div>
+        
+        <div id="messages">
+            <div class="msg ai">
+                <div class="avatar">
+                    <i class="bi bi-robot text-white"></i>
+                </div>
+                <div class="content">
+                    <p class="mb-0">Hello! I am your AI coding assistant. What would you like to build?</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="message-input">
+            <div class="d-flex gap-2">
+                <textarea 
+                    id="input" 
+                    class="input-field flex-grow-1" 
+                    rows="1" 
+                    placeholder="Ask me anything..."
+                    onkeydown="handleKeyDown(event)"
+                ></textarea>
+                <button class="btn btn-p" onclick="sendMessage()">
+                    <i class="bi bi-send"></i>
+                </button>
+                <button class="btn" style="background: #1a1a24; border: 1px solid #27272a; color: #a1a1aa" onclick="clearChat()">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+<script>
+let currentModel = '{{ model }}' || 'openrouter/free';
+let conversationHistory = [];
+
+function handleKeyDown(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+
+function setModel(model) {
+    // Update URL with new model
+    const url = new URL(window.location);
+    url.searchParams.set('model', model);
+    window.location.href = url.toString();
+}
+
+function addMessage(role, content) {
+    const messagesDiv = document.getElementById('messages');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg ${role}`;
+    
+    const icon = role === 'ai' ? 'bi-robot' : 'bi-person';
+    const iconColor = role === 'ai' ? '#fff' : '#a1a1aa';
+    
+    // Format content to handle code blocks
+    const formattedContent = formatContent(content);
+    
+    msgDiv.innerHTML = `
+        <div class="avatar">
+            <i class="bi ${icon}" style="color: ${iconColor}"></i>
+        </div>
+        <div class="content">
+            <p class="mb-0">${formattedContent}</p>
+        </div>
+    `;
+    messagesDiv.appendChild(msgDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function formatContent(content) {
+    // Escape HTML first
+    content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    
+    // Format code blocks
+    content = content.replace(/```(\w*)\n?([\s\S]*?)```/g, (match, lang, code) => {
+        return `<pre class="code-block"><code>${code.trim()}</code></pre>`;
+    });
+    
+    // Format inline code
+    content = content.replace(/`([^`]+)`/g, '<code style="background: #1a1a24; padding: 0.125rem 0.25rem; border-radius: 4px;">$1</code>');
+    
+    // Convert newlines to <br>
+    content = content.replace(/\n/g, '<br>');
+    
+    return content;
+}
+
+function showTypingIndicator() {
+    const messagesDiv = document.getElementById('messages');
+    const typingDiv = document.createElement('div');
+    typingDiv.id = 'typing-indicator';
+    typingDiv.className = 'msg ai';
+    typingDiv.innerHTML = `
+        <div class="avatar">
+            <i class="bi bi-robot text-white"></i>
+        </div>
+        <div class="content">
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    `;
+    messagesDiv.appendChild(typingDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) {
+        indicator.remove();
+    }
+}
+
+async function sendMessage() {
+    const input = document.getElementById('input');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    // Add user message to UI
+    addMessage('user', message);
+    
+    // Update conversation history
+    conversationHistory.push({ role: 'user', content: message });
+    
+    // Clear input
+    input.value = '';
+    input.style.height = 'auto';
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    try {
+        // Call API
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                model: currentModel,
+                history: conversationHistory
+            })
+        });
+        
+        const data = await response.json();
+        removeTypingIndicator();
+        
+        if (data.error) {
+            addMessage('ai', 'Error: ' + data.error);
+        } else {
+            addMessage('ai', data.response);
+            conversationHistory.push({ role: 'assistant', content: data.response });
+        }
+    } catch (error) {
+        removeTypingIndicator();
+        addMessage('ai', 'Sorry, something went wrong. Please try again.');
+        console.error('Error:', error);
+    }
+}
+
+function clearChat() {
+    const messagesDiv = document.getElementById('messages');
+    messagesDiv.innerHTML = `
+        <div class="msg ai">
+            <div class="avatar">
+                <i class="bi bi-robot text-white"></i>
+            </div>
+            <div class="content">
+                <p class="mb-0">Chat cleared! How can I help you?</p>
+            </div>
+        </div>
+    `;
+    conversationHistory = [];
+}
+
+// Auto-resize textarea
+document.getElementById('input').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+});
+</script>
+{% endblock %}
