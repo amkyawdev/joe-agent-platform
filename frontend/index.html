@@ -152,7 +152,7 @@ Joe AI Studio
 </footer>
 <script>
 let model='openrouter/free';
-(function init(){var pages=document.querySelectorAll('.page-div');for(var i=0;i<pages.length;i++){var p=pages[i];p.setAttribute('data-active',p.classList.contains('active')?'true':'false')}})();
+(function init(){setTimeout(function(){var pages=document.querySelectorAll('.page-div');for(var i=0;i<pages.length;i++){var p=pages[i];p.setAttribute('data-active',p.classList.contains('active')?'true':'false')}},100)})();
 function showPage(p){var target=document.getElementById('page-'+p);if(!target)return;var pages=document.querySelectorAll('.page-div');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].setAttribute('data-active','false')}target.classList.add('active');target.setAttribute('data-active','true');var navLinks=document.querySelectorAll('.nav-link');for(var j=0;j<navLinks.length;j++){navLinks[j].classList.remove('active')}var activeLink=document.querySelector('.nav-link[onclick="showPage(\''+p+'\')"]');if(activeLink)activeLink.classList.add('active')}
 function setModel(b,m){document.querySelectorAll('.btn-sm').forEach(x=>x.classList.remove('active'));b.classList.add('active');model=m}
 const inp=document.getElementById('input');
