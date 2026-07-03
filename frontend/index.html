@@ -32,7 +32,7 @@ body{font-family:sans-serif;background:#0a0a0f;color:#fff;min-height:100vh}
 .icon{width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:1.5rem;color:#fff}
 .section{display:none !important}
 .section.active{display:block !important}
-.page{/* visibility controlled by JS */}
+.page-div{/* visibility controlled by JS */}
 .typing span{width:8px;height:8px;background:#a1a1aa;border-radius:50%;animation:typing 1.4s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
 .typing span:nth-child(3){animation-delay:.4s}
@@ -59,8 +59,8 @@ Joe AI Studio
 </div>
 </div>
 </nav>
-<main class="main">
-<div id="page-home" class="page active">
+<main class="main" id="pages-container">
+<div id="page-home" class="page-div active">
 <div class="hero">
 <h1 style="font-size:3rem;font-weight:800">Build with <span style="background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Free AI</span><br>Powered by OpenRouter</h1>
 <p class="text-secondary mx-auto" style="max-width:600px">Generate code, chat with AI, and build applications using free coding models.</p>
@@ -93,7 +93,7 @@ Joe AI Studio
 </div>
 </div>
 </div>
-<div id="page-chat" class="page">
+<div id="page-chat" class="page-div">
 <div class="container py-4">
 <div class="chat">
 <div style="padding:1rem 1.5rem;border-bottom:1px solid #27272a;display:flex;justify-content:space-between;align-items:center">
@@ -119,7 +119,7 @@ Joe AI Studio
 </div>
 </div>
 </div>
-<div id="page-docs" class="page">
+<div id="page-docs" class="page-div">
 <div class="container py-5">
 <h1 class="text-center fw-bold mb-4"><i class="bi bi-book me-2"></i>Documentation</h1>
 <div class="row g-4">
@@ -135,7 +135,7 @@ Joe AI Studio
 </div>
 </div>
 </div>
-<div id="page-about" class="page">
+<div id="page-about" class="page-div">
 <div class="container py-5">
 <h1 class="text-center fw-bold mb-4"><i class="bi bi-info-circle me-2"></i>About</h1>
 <div class="row g-4 mb-4">
@@ -152,8 +152,8 @@ Joe AI Studio
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 let model='openrouter/free';
-(function initPages(){var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){var p=pages[i];if(p.classList.contains('active')){p.style.display='block'}else{p.style.display='none'}}})();
-function showPage(p){var target=document.getElementById('page-'+p);if(!target)return;var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display='none'}target.classList.add('active');target.style.display='block';var navLinks=document.querySelectorAll('.nav-link');for(var j=0;j<navLinks.length;j++){navLinks[j].classList.remove('active')}var activeLink=document.querySelector('.nav-link[onclick="showPage(\''+p+'\')"]');if(activeLink)activeLink.classList.add('active')}
+(function initPages(){var pages=document.querySelectorAll('.page-div');for(var i=0;i<pages.length;i++){var p=pages[i];if(p.classList.contains('active')){p.style.display='block'}else{p.style.display='none'}}})();
+function showPage(p){var target=document.getElementById('page-'+p);if(!target)return;var pages=document.querySelectorAll('.page-div');for(var i=0;i<pages.length;i++){pages[i].classList.remove('active');pages[i].style.display='none'}target.classList.add('active');target.style.display='block';var navLinks=document.querySelectorAll('.nav-link');for(var j=0;j<navLinks.length;j++){navLinks[j].classList.remove('active')}var activeLink=document.querySelector('.nav-link[onclick="showPage(\''+p+'\')"]');if(activeLink)activeLink.classList.add('active')}
 function setModel(b,m){document.querySelectorAll('.btn-sm').forEach(x=>x.classList.remove('active'));b.classList.add('active');model=m}
 const inp=document.getElementById('input');
 inp.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,150)+'px'});
